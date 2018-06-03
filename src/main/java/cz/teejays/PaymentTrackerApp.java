@@ -4,10 +4,10 @@ import cz.teejays.components.*;
 
 import java.util.Arrays;
 
+/**
+ * Application entry point.
+ */
 public class PaymentTrackerApp {
-
-    //
-    private static AppContext appContext;
 
     /**
      * CLI entry point. Parse arguments, initialize app context and start it.
@@ -25,26 +25,10 @@ public class PaymentTrackerApp {
             System.exit(-1);
         }
 
-        // context initialization phase
-        initializeContext(appOptions);
-
-        // app start
-        appContext.start();
-    }
-
-    /**
-     * Initialize needed app components
-     * @param appOptions App options and flags
-     */
-    public static void initializeContext(AppOptions appOptions){
-        appContext = new AppContext(appOptions);
-        appContext.setOutputHandler(new OutputHandler(appContext));
-        if(appOptions.isOptionInitializationFileUsed()){
-            appContext.setFileInputProcessor(new FileInputProcessor(appContext));
-        }
-        appContext.setPaymentTracker(new PaymentTracker());
-        appContext.setInputProcessor(new InputProcessor(appContext));
-        appContext.setPeriodicPaymentDisplay(new PeriodicPaymentDisplay(appContext));
+        // app context init & start
+        AppContext.getInstance()
+                .initialize(appOptions)
+                .start();
     }
 
     /**

@@ -15,7 +15,8 @@ public class AppOptions {
 
     // static
     public static final String BASE_CURRENCY = "USD"; // use 3 char uppercase notation
-    public static final int DISPLAY_INTERVAL = 20; // in seconds
+    public static final int DISPLAY_INTERVAL = 4; // in seconds
+    public static final String EXIT_COMMAND = "EXIT";
 
     // flags
     private final String FLAG_INPUT_FILE = "-f";

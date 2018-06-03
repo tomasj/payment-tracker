@@ -22,7 +22,15 @@ public class OutputHandler {
      * @param returnCode Return code
      */
     public void exitApp(String message, int returnCode) {
-        System.out.println(message);
+
+        // normal or error output?
+        if(returnCode == 0){
+            System.out.println(message);
+        }else{
+            System.err.println(message);
+        }
+
+        // exit
         appContext.exit();
         System.exit(returnCode);
     }
@@ -45,18 +53,28 @@ public class OutputHandler {
         }
     }
 
-    public void printSeparatorTOConsole(){
-        System.out.println("-----");
+    public void printCurrencyToConsole(String ccy, BigDecimal amount, BigDecimal exchangeRate){
+        System.out.println(formatCurrencyOutput(ccy, amount, exchangeRate));
     }
 
-    public void printCurrencyToConsole(String ccy, BigDecimal amount, BigDecimal exchangeRate){
-        System.out.println(
+    /**
+     * Formats ccy for output. Take care for conversion and rounding.
+     * @param ccy Currency
+     * @param amount Amount
+     * @param exchangeRate Exchange rate to BASE ccy
+     * @return Formatted string
+     */
+    public String formatCurrencyOutput(String ccy, BigDecimal amount, BigDecimal exchangeRate){
+        return
 
             // print basic balance
-            ccy + " " + amount.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() +
+            ccy + " " + amount.setScale(2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros().toPlainString() +
 
             // print exchange rate if present
-            (exchangeRate == null ? "" : " (" + AppOptions.BASE_CURRENCY + " " + amount.multiply(exchangeRate).setScale(2, BigDecimal.ROUND_HALF_UP).toString() + ")")
-        );
+            (exchangeRate == null ? "" : " (" + AppOptions.BASE_CURRENCY + " "
+                    + amount.multiply(exchangeRate)
+                        .setScale(2, BigDecimal.ROUND_HALF_UP)
+                        .stripTrailingZeros()
+                        .toPlainString() + ")");
     }
 }

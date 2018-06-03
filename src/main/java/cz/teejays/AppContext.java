@@ -8,6 +8,9 @@ import lombok.Setter;
 @Setter
 public class AppContext {
 
+    // singleton instance
+    private static AppContext instance = null;
+
     // options
     private AppOptions appOptions;
 
@@ -18,8 +21,26 @@ public class AppContext {
     private OutputHandler outputHandler;
     private PeriodicPaymentDisplay periodicPaymentDisplay;
 
-    public AppContext(AppOptions appOptions) {
-        this.appOptions = appOptions;
+    protected AppContext(){}
+
+    public static AppContext getInstance() {
+        if(instance == null) {
+            instance = new AppContext();
+        }
+        return instance;
+    }
+
+    //
+    public AppContext initialize(AppOptions appOptions){
+        instance.setAppOptions(appOptions);
+        instance.setOutputHandler(new OutputHandler(instance));
+        if(appOptions.isOptionInitializationFileUsed()){
+            instance.setFileInputProcessor(new FileInputProcessor(instance));
+        }
+        instance.setPaymentTracker(new PaymentTracker());
+        instance.setInputProcessor(new InputProcessor(instance));
+        instance.setPeriodicPaymentDisplay(new PeriodicPaymentDisplay(instance));
+        return instance;
     }
 
     //

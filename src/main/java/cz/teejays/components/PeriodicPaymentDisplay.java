@@ -11,6 +11,9 @@ import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
+/**
+ * Runs PeriodicPaymentDisplayJob in periodic intervals.
+ */
 public class PeriodicPaymentDisplay {
 
     private AppContext appContext;
@@ -21,8 +24,9 @@ public class PeriodicPaymentDisplay {
 
         // quartz scheduler
         try {
-            Properties schedulerProperties = new Properties();
-            schedulerProperties.setProperty(StdSchedulerFactory.PROP_SCHED_SKIP_UPDATE_CHECK, "true");
+            // TODO: might be useful to remove Quartz startup update check
+            // Properties schedulerProperties = new Properties();
+            // schedulerProperties.setProperty(StdSchedulerFactory.PROP_SCHED_SKIP_UPDATE_CHECK, "true");
             scheduler = StdSchedulerFactory.getDefaultScheduler();
         } catch (SchedulerException e) {
             appContext.getOutputHandler().exitApp("Unable to initialize periodic displaying", -1);
@@ -48,6 +52,7 @@ public class PeriodicPaymentDisplay {
                 .withSchedule(simpleSchedule()
                         .withIntervalInSeconds(AppOptions.DISPLAY_INTERVAL)
                         .repeatForever())
+                .startNow()
                 .build();
 
         // quartz schedule
@@ -73,7 +78,7 @@ public class PeriodicPaymentDisplay {
         try {
             scheduler.shutdown();
         } catch (SchedulerException e) {
-            appContext.getOutputHandler().exitApp("Unable to start periodic displaying", -1);
+            appContext.getOutputHandler().exitApp("Unable to stop periodic displaying", -1);
         }
     }
 }

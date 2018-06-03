@@ -1,17 +1,16 @@
 package cz.teejays.components;
 
 import cz.teejays.AppContext;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.Properties;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
-
+/**
+ * Prints balance for each currency, along with it's exchange rate (if present).
+ */
 public class PeriodicPaymentDisplayJob implements Job {
 
     public static final String APP_CONTEXT_QUARTZ_KEY = "appContext";

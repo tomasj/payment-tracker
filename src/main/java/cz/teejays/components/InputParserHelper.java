@@ -5,8 +5,17 @@ import javafx.util.Pair;
 
 import java.math.BigDecimal;
 
+/**
+ * Helps to parse input command line input.
+ */
 public class InputParserHelper {
 
+    /**
+     * Interprets payment command.
+     * @param inputLine The input command
+     * @return Pair of currency and amount
+     * @throws IllegalArgumentException When input is not in expected format
+     */
     public static Pair<String, BigDecimal> parsePaymentInputLine(String inputLine) throws IllegalArgumentException {
         String[] split = inputLine.split(" ");
 
@@ -17,12 +26,12 @@ public class InputParserHelper {
         if(split[0].length() != 3){ throw new IllegalArgumentException("Currency symbol format error"); }
 
         //
-        String currency = split[0].toUpperCase();
+        String currency = split[0];
 
         // parse amount
         BigDecimal amount;
         try {
-            amount = new BigDecimal(split[1]);
+            amount = new BigDecimal(split[1].replace(",", "."));
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Unknown amount format");
         }
@@ -58,8 +67,8 @@ public class InputParserHelper {
         if(currencies[0].length() != 3 || currencies[1].length() != 3){ throw new IllegalArgumentException("Currency symbol format error"); }
 
         // convert exchange currencies to UC
-        String currencyMain = currencies[0].toUpperCase();
-        String currencyTarget = currencies[1].toUpperCase();
+        String currencyMain = currencies[0];
+        String currencyTarget = currencies[1];
 
         // at least one ccy must be our BASE
         if(!AppOptions.BASE_CURRENCY.equals(currencyMain) && !AppOptions.BASE_CURRENCY.equals(currencyTarget)){
@@ -74,7 +83,7 @@ public class InputParserHelper {
         // parse exchange rate
         BigDecimal exchangeRate;
         try {
-            exchangeRate = new BigDecimal(split[1]);
+            exchangeRate = new BigDecimal(split[1].replace(",", "."));
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Unknown amount format");
         }

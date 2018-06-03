@@ -1,6 +1,7 @@
 package cz.teejays.components;
 
 import cz.teejays.AppContext;
+import cz.teejays.AppOptions;
 import javafx.util.Pair;
 
 import java.math.BigDecimal;
@@ -27,6 +28,14 @@ public class InputProcessor {
     }
 
     public void processInputLine(String inputLine, boolean fileInput){
+
+        // to upper case
+        inputLine = inputLine.toUpperCase();
+
+        // exit?
+        if(inputLine.equals(AppOptions.EXIT_COMMAND)){
+            appContext.getOutputHandler().exitApp("", 0);
+        }
 
         // what we got? payment or exchange rate?
         if(InputParserHelper.isExchangeRate(inputLine)){
