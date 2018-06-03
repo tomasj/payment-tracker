@@ -32,6 +32,10 @@ class OutputHandlerTest {
         out = outputHandler.formatCurrencyOutput("CZK", BigDecimal.valueOf(133.333333), BigDecimal.valueOf(0.05));
         assertEquals(out, "CZK 133.33 (USD 6.67)");
 
+        // decimal output - single decimal place
+        out = outputHandler.formatCurrencyOutput("CZK", BigDecimal.valueOf(133.3), BigDecimal.valueOf(0.05));
+        assertEquals(out, "CZK 133.3 (USD 6.67)");
+
         // decimal output - more precision in both balance and exchange rate
         out = outputHandler.formatCurrencyOutput("CZK", BigDecimal.valueOf(133.333333), BigDecimal.valueOf(0.0666666));
         assertEquals(out, "CZK 133.33 (USD 8.89)");

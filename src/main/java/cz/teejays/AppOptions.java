@@ -15,14 +15,13 @@ public class AppOptions {
 
     // static
     public static final String BASE_CURRENCY = "USD"; // use 3 char uppercase notation
-    public static final int DISPLAY_INTERVAL = 4; // in seconds
+    public static final int DISPLAY_INTERVAL = 60; // in seconds
     public static final String EXIT_COMMAND = "EXIT";
 
     // flags
     private final String FLAG_INPUT_FILE = "-f";
     private final String FLAG_FAIL_ON_FILE_ERROR = "-failOnFileError";
     private final String FLAG_FAIL_ON_INPUT_ERROR = "-failOnInputError";
-    private final String FLAG_REAL_NUMBERS_ALLOWED = "-realNumbersAllowed";
 
     // app options
     private boolean optionFailOnFileError = false;
@@ -52,6 +51,5 @@ public class AppOptions {
         // other flags
         if(arguments.contains(FLAG_FAIL_ON_FILE_ERROR)){ setOptionFailOnFileError(true); }
         if(arguments.contains(FLAG_FAIL_ON_INPUT_ERROR)){ setOptionFailOnInputError(true); }
-        if(arguments.contains(FLAG_REAL_NUMBERS_ALLOWED)){ setOptionRealNumbersAllowed(true); }
     }
 }
