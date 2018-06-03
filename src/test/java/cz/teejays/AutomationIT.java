@@ -107,6 +107,46 @@ class AutomationIT {
     }
 
     /**
+     * Fail flag used.
+     */
+    @Test
+    void basicWithErrorFlag() {
+        try {
+
+            // start process
+            initProcess("java -jar target/payment-tracker.jar -failOnInputError");
+
+            // app lives?
+            assertTrue(process.isAlive());
+
+            // app records ok? - write command and wait for periodic display
+            write("USD 900", out);
+            Thread.sleep((AppOptions.DISPLAY_INTERVAL + 1) * 1000); // wait for periodic display
+
+            // app records ok? - read input, check timeout
+            assertTimeoutPreemptively(ofSeconds(5), () -> {
+                assertEquals("USD 900", readLine(inputScanner));
+            }, "Timed-out: No output observed after payment command");
+
+            // send erroneous input command
+            write("USDs -400", out);
+
+            // read from error output
+            assertTimeoutPreemptively(ofSeconds(5), () -> {
+                assertEquals("Payment processing error: " + "Currency symbol format error", readLine(errInputScanner));
+            }, "Timed-out: No output observed after payment command");
+
+            // app exits with error code?
+            Thread.sleep(1000); // give it a sec for shutdown
+            assertEquals(-1, process.exitValue());
+
+        } catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    /**
      * End process, join its thread, cleanup
      */
     @AfterEach
