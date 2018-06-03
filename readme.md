@@ -2,11 +2,20 @@
 
 _Requirements: Java 8+, Maven 3+_ 
 
+**Build**
+
 Use maven to build the app: `mvn clean package verify`
 
 Build results will be generated to directory `target/`.
 Javadoc is located under `target/site/apidocs`.
 
+**Release**
+
+Release new minor version with:
+`mvn -B clean release:prepare release:perform`
+
+Don't have patience to wait for tests? Release with:
+`mvn -B clean release:prepare release:perform -Darguments="-DskipTests"`
 
 ## Running it
 After successful build, app's JAR file will be located at `target/payment-tracker.jar`. Run it with `java -jar payment-tracker.jar`
