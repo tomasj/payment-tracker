@@ -1,10 +1,13 @@
 package cz.teejays.components;
 
 import lombok.Getter;
+import lombok.Synchronized;
 import lombok.extern.log4j.Log4j2;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Tracker maintains balance and exchange rate for each currency
@@ -18,19 +21,20 @@ public class PaymentTracker {
      * Balances. Sum of all processed payment transactions in <key> ccy.
      */
     @Getter
-    private HashMap<String, BigDecimal> balances = new HashMap<>();
+    private Map<String, BigDecimal> balances = new HashMap<>();
 
     /**
      * Exchange rates. How many units of <key> currency can 1 unit of BASE ccy buy.
      */
     @Getter
-    private HashMap<String, BigDecimal> exchangeRates = new HashMap<>();
+    private Map<String, BigDecimal> exchangeRates = new HashMap<>();
 
     /**
      * Add payment to balance statement
      * @param ccy Target ccy
      * @param amount Amount to add (can be negative)
      */
+    @Synchronized
     void processPayment(String ccy, BigDecimal amount){
         log.info("Tracking payment: " + ccy + " -> " + amount);
 
@@ -67,6 +71,7 @@ public class PaymentTracker {
      * @param ccy Target currency
      * @param exchangeRate New exchange rate
      */
+    @Synchronized
     void updateExchangeRate(String ccy, BigDecimal exchangeRate){
         exchangeRates.put(ccy, exchangeRate);
     }
